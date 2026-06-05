@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 import { addMonths, startOfMonth, parseISO } from "date-fns";
 import type { Availability } from "@/lib/supabase/types";
 

@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 import {
   differenceInDays,
   format,
@@ -185,7 +186,7 @@ export default function BookingCard({
 
       {/* ── Inline calendar ── */}
       {openField && (
-        <div className="mb-3 border border-[var(--border-light)] rounded-2xl bg-[var(--surface)] p-3 animate-fade-in-up">
+        <div className="booking-cal mb-3 border border-[var(--border-light)] rounded-2xl bg-[var(--surface)] p-3 animate-fade-in-up">
           <div className="flex items-center justify-between mb-1 px-1">
             <p className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
               {openField === "checkin"
@@ -315,63 +316,55 @@ export default function BookingCard({
 // ─── Calendar styles ─────────────────────────────────────────
 
 const CALENDAR_CSS = `
-  .rdp-root {
+  /* Override DayPicker CSS variables to match Manzeli design */
+  .booking-cal .rdp-root {
     --rdp-accent-color: var(--accent);
     --rdp-accent-background-color: var(--accent-light);
-    --rdp-font-size: 13px;
+    --rdp-today-color: var(--accent);
+    --rdp-day-height: 36px;
+    --rdp-day-width: 36px;
+    --rdp-day_button-height: 34px;
+    --rdp-day_button-width: 34px;
+    --rdp-day_button-border-radius: 50%;
+    --rdp-selected-border: 2px solid var(--accent);
+    font-size: 13px;
   }
-  .rdp-month_caption {
+  .booking-cal .rdp-month_caption {
     font-size: 14px;
     font-weight: 600;
-    padding-bottom: 8px;
   }
-  .rdp-weekday {
+  .booking-cal .rdp-weekday {
     font-size: 11px;
     font-weight: 600;
     color: var(--muted);
-    text-transform: uppercase;
   }
-  .rdp-day_button {
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    font-size: 13px;
-    transition: background-color 0.1s;
-  }
-  .rdp-day_button:hover:not(:disabled) {
-    background-color: var(--border-light);
-  }
-  .rdp-disabled .rdp-day_button {
-    opacity: 0.3;
-  }
-  /* Range start — right half gets accent-light background */
-  .bk-range-start {
+  /* Range start — right half filled */
+  .booking-cal .bk-range-start {
     background: linear-gradient(to right, transparent 50%, var(--accent-light) 50%);
   }
-  .bk-range-start .rdp-day_button {
+  .booking-cal .bk-range-start .rdp-day_button {
     background-color: var(--accent) !important;
     color: white !important;
+    border-color: transparent !important;
     border-radius: 50% !important;
   }
-  /* Range end — left half gets accent-light background */
-  .bk-range-end {
+  /* Range end — left half filled */
+  .booking-cal .bk-range-end {
     background: linear-gradient(to left, transparent 50%, var(--accent-light) 50%);
   }
-  .bk-range-end .rdp-day_button {
+  .booking-cal .bk-range-end .rdp-day_button {
     background-color: var(--accent) !important;
     color: white !important;
+    border-color: transparent !important;
     border-radius: 50% !important;
   }
-  /* Range middle — full accent-light background, no circle */
-  .bk-range-middle {
+  /* Range middle — solid fill, no circle */
+  .booking-cal .bk-range-middle {
     background-color: var(--accent-light);
   }
-  .bk-range-middle .rdp-day_button {
-    border-radius: 0 !important;
-  }
-  /* rdp selected override */
-  .rdp-selected:not(.bk-range-start):not(.bk-range-end) .rdp-day_button {
-    background-color: var(--accent) !important;
-    color: white !important;
+  .booking-cal .bk-range-middle .rdp-day_button {
+    --rdp-day_button-border-radius: 0 !important;
+    color: var(--foreground) !important;
+    border-color: transparent !important;
   }
 `;
