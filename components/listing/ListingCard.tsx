@@ -37,7 +37,7 @@ export default function ListingCard({ listing }: ListingCardProps) {
 ].filter(Boolean);
 
   return (
-    <Link href={`/listing/${listing.slug}`} className="group block">
+    <Link href={`/chalets/${listing.slug}`} className="group block">
       {/* Image section with overlays */}
       <div className="relative">
         <ImageCarousel images={images} alt={listing.title} />

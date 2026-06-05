@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 const NAV = [
   { href: '/admin/dashboard', label: 'Overview' },
@@ -22,7 +22,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   async function handleSignOut() {
     setSigningOut(true)
-    const supabase = createClient()
+    
     await supabase.auth.signOut()
     router.push('/admin/login')
     router.refresh()

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import type { Role } from '@/lib/supabase/types'
 
 interface Props {
@@ -30,7 +30,7 @@ export default function LoginForm({
     setError(null)
     setLoading(true)
 
-    const supabase = createClient()
+
 
     // 1. Authenticate
     const { data, error: authError } = await supabase.auth.signInWithPassword({
