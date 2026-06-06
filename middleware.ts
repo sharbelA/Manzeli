@@ -43,7 +43,7 @@ export async function middleware(request: NextRequest) {
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .single() as { data: { role: string } | null }
 
     if (!profile || (profile.role !== 'host' && profile.role !== 'admin')) {
       return NextResponse.redirect(new URL('/host/login', request.url))
@@ -59,7 +59,7 @@ export async function middleware(request: NextRequest) {
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .single() as { data: { role: string } | null }
 
     if (!profile || profile.role !== 'admin') {
       return NextResponse.redirect(new URL('/admin/login', request.url))

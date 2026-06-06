@@ -27,8 +27,8 @@ export default function Hero() {
             <span className="text-[var(--accent)]">Lebanon</span>
           </h1>
           <p className="mt-5 text-lg text-[var(--muted)] max-w-md leading-relaxed">
-            Discover handpicked chalets, villas, and vacation homes — from
-            coastal Batroun to the mountain peaks.
+            Discover handpicked chalets and villas on the Batroun coast —
+            your perfect getaway is one click away.
           </p>
         </div>
 

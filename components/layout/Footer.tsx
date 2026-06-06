@@ -1,94 +1,116 @@
 /**
- * Footer — site-wide footer with link columns and social icons.
- * Data-driven: add/remove links by editing the `columns` array.
+ * Footer — all links point to real pages, socials use env vars.
  */
 
 import Link from "next/link";
 import { Icon, Container } from "@/components/ui";
 import { SITE } from "@/lib/constants";
 
+const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+
 const columns = [
   {
     title: "Explore",
     links: [
-      { label: "Batroun", href: "#" },
-      { label: "Faraya", href: "#" },
-      { label: "The Cedars", href: "#" },
-      { label: "Ehden", href: "#" },
+      { label: "All chalets", href: "/chalets" },
+      { label: "About us", href: "/about" },
     ],
   },
   {
     title: "Hosting",
     links: [
-      { label: "List your property", href: "#" },
-      { label: "Host resources", href: "#" },
-      { label: "Responsible hosting", href: "#" },
+      { label: "List your property", href: "/list-your-chalet" },
+      { label: "Host login", href: "/host/login" },
     ],
   },
   {
-    title: "Support",
+    title: "Contact",
     links: [
-      { label: "Help centre", href: "#" },
-      { label: "Safety information", href: "#" },
-      { label: "Cancellation policy", href: "#" },
-    ],
-  },
-  {
-    title: SITE.name,
-    links: [
-      { label: "About us", href: "#" },
-      { label: "Contact", href: "#" },
-      { label: "Terms & Privacy", href: "#" },
+      ...(WA ? [{ label: "WhatsApp us", href: `https://wa.me/${WA}` }] : []),
+      { label: "Instagram", href: "https://instagram.com/manzeli.lb" },
     ],
   },
 ] as const;
-
-const socials = [
-  { name: "instagram" as const, href: "#", label: "Instagram" },
-  { name: "whatsapp" as const, href: "#", label: "WhatsApp" },
-];
 
 export default function Footer() {
   return (
     <footer className="border-t border-[var(--border-light)] bg-[var(--surface)]">
       <Container className="py-10">
-        {/* Link columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
+                <Icon name="home" size={16} stroke="white" fill="none" />
+              </div>
+              <span className="text-lg font-bold tracking-tight">
+                {SITE.name}
+              </span>
+            </div>
+            <p className="text-sm text-[var(--muted)] leading-relaxed">
+              {SITE.tagline}
+            </p>
+          </div>
+
           {columns.map((col) => (
             <div key={col.title}>
               <h3 className="text-sm font-semibold mb-3">{col.title}</h3>
               <ul className="space-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:underline transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
+                {col.links.map((link) => {
+                  const isExternal = link.href.startsWith("http");
+                  return (
+                    <li key={link.label}>
+                      {isExternal ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:underline transition-colors"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:underline transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom */}
         <div className="mt-10 pt-6 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-[var(--muted)]">
             © {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            {socials.map((social) => (
-              <Link
-                key={social.name}
-                href={social.href}
-                className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
-                aria-label={social.label}
+            <a
+              href="https://instagram.com/manzeli.lb"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+              aria-label="Instagram"
+            >
+              <Icon name="instagram" size={18} />
+            </a>
+            {WA && (
+              <a
+                href={`https://wa.me/${WA}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--muted)] hover:text-[#25D366] transition-colors"
+                aria-label="WhatsApp"
               >
-                <Icon name={social.name} size={18} />
-              </Link>
-            ))}
+                <Icon name="whatsapp" size={18} />
+              </a>
+            )}
           </div>
         </div>
       </Container>

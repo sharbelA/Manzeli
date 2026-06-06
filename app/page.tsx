@@ -3,9 +3,13 @@ import { Hero } from "@/components/home";
 import { ListingGrid } from "@/components/listing";
 import { getListings } from "@/lib/supabase/queries/listings";
 
+export const revalidate = 60; // Cache for 60 seconds
+
 export default async function Home() {
-  const featured = await getListings({ featured: true });
-  const all = await getListings();
+  const [featured, all] = await Promise.all([
+    getListings({ featured: true }),
+    getListings(),
+  ]);
 
   return (
     <>

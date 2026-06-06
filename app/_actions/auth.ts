@@ -45,3 +45,39 @@ export async function adminLoginAction(
 
   redirect('/admin')
 }
+
+// ─── Logout ─────────────────────────────────────────────────
+
+export async function logoutAction() {
+  const supabase = await createClient()
+  await supabase.auth.signOut()
+  redirect('/')
+}
+
+// ─── Get current user with role ─────────────────────────────
+
+export type CurrentUser = {
+  id: string
+  email: string
+  name: string
+  role: 'admin' | 'host' | 'guest'
+} | null
+
+export async function getCurrentUser(): Promise<CurrentUser> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: profile } = (await supabase
+    .from('profiles')
+    .select('name, role')
+    .eq('id', user.id)
+    .single()) as { data: { name: string; role: 'admin' | 'host' | 'guest' } | null }
+
+  return {
+    id: user.id,
+    email: user.email ?? '',
+    name: profile?.name ?? user.email?.split('@')[0] ?? 'User',
+    role: profile?.role ?? 'guest',
+  }
+}

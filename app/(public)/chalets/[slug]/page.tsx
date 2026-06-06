@@ -112,28 +112,7 @@ export default async function ChaletDetailPage(
 
               <Divider />
 
-              {/* ── Host Info ── */}
-              {host && (
-                <>
-                  <section>
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-[var(--accent)] flex items-center justify-center shrink-0">
-                        <span className="text-white text-lg font-bold">
-                          {host.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-semibold">Hosted by {host.name}</p>
-                        <p className="text-sm text-[var(--muted)]">
-                          Property owner · Batroun, Lebanon
-                        </p>
-                      </div>
-                    </div>
-                  </section>
-                  <Divider />
-                </>
-              )}
-
+             
               {/* ── Description ── */}
               <section>
                 <h2 className="text-xl font-semibold mb-3">About this place</h2>

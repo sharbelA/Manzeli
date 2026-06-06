@@ -1,156 +1,82 @@
 /**
- * Header — sticky navigation with search bar and user menu.
- * Airbnb-style: logo | search | user controls.
+ * Header — auth-aware server component.
+ * Fetches current user role and passes to client UserMenu.
  */
 
-"use client";
-
-import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Icon, Container } from "@/components/ui";
+import { getCurrentUser } from "@/app/_actions/auth";
+import { SITE } from "@/lib/constants";
+import UserMenu from "./UserMenu";
 
-export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  // Close menu on outside click
-  useEffect(() => {
-    if (!menuOpen) return;
-    const handleClick = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [menuOpen]);
+export default async function Header() {
+  const user = await getCurrentUser();
+  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-[var(--border-light)]">
       <Container>
         <div className="flex h-[var(--header-height)] items-center justify-between gap-4">
-          {/* ── Logo ── */}
-          <Logo />
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[var(--accent)] flex items-center justify-center">
+              <Icon name="home" size={20} stroke="white" fill="none" />
+            </div>
+            <span className="text-xl font-bold tracking-tight text-[var(--foreground)]">
+              {SITE.name}
+            </span>
+          </Link>
 
-          {/* ── Search bar — desktop ── */}
-          <SearchBar />
+          <Link
+            href="/chalets"
+            className="hidden md:flex items-center border border-[var(--border)] rounded-full px-2 py-2 shadow-sm hover:shadow-md transition-shadow duration-200"
+          >
+            <span className="px-4 text-sm font-semibold border-r border-[var(--border)]">
+              Batroun
+            </span>
+            <span className="px-4 text-sm font-semibold border-r border-[var(--border)]">
+              Any week
+            </span>
+            <span className="px-4 text-sm text-[var(--muted)]">Add guests</span>
+            <div className="ml-2 w-8 h-8 rounded-full bg-[var(--accent)] flex items-center justify-center">
+              <Icon name="search" size={14} stroke="white" strokeWidth={3} />
+            </div>
+          </Link>
 
-          {/* ── Right controls ── */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <Link
-              href="#"
+              href="/list-your-chalet"
               className="hidden lg:block text-sm font-semibold hover:bg-[var(--surface)] rounded-full px-4 py-2.5 transition-colors"
             >
               List your property
             </Link>
-
-            {/* User menu trigger */}
-            <div ref={menuRef} className="relative">
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="flex items-center gap-2 border border-[var(--border)] rounded-full px-3 py-2 hover:shadow-md transition-shadow duration-200"
-                aria-expanded={menuOpen}
-                aria-haspopup="true"
+            {whatsapp && (
+              <a
+                href={`https://wa.me/${whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="hidden sm:flex w-10 h-10 items-center justify-center rounded-full text-[#25D366] hover:bg-[var(--surface)] transition-colors"
               >
-                <Icon name="menu" size={16} />
-                <div className="w-7 h-7 rounded-full bg-[var(--muted)] flex items-center justify-center">
-                  <Icon name="user" size={14} fill="white" stroke="none" />
-                </div>
-              </button>
-
-              {/* Dropdown */}
-              {menuOpen && <UserMenu onClose={() => setMenuOpen(false)} />}
-            </div>
+                <Icon name="whatsapp" size={20} />
+              </a>
+            )}
+            <UserMenu user={user} />
           </div>
         </div>
 
-        {/* ── Mobile search ── */}
-        <MobileSearchBar />
+        <Link
+          href="/chalets"
+          className="md:hidden w-full flex items-center gap-3 border border-[var(--border)] rounded-full px-4 py-3 shadow-sm bg-white mb-4"
+        >
+          <Icon name="search" size={18} strokeWidth={2.5} />
+          <div className="text-left">
+            <p className="text-sm font-semibold leading-tight">Where to?</p>
+            <p className="text-xs text-[var(--muted)] leading-tight mt-0.5">
+              Browse chalets in Batroun
+            </p>
+          </div>
+        </Link>
       </Container>
     </header>
-  );
-}
-
-// ─── Sub-components ─────────────────────────────────────────
-
-function Logo() {
-  return (
-    <Link href="/" className="flex items-center gap-2 shrink-0">
-      <div className="w-9 h-9 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-        <Icon name="home" size={20} stroke="white" fill="none" />
-      </div>
-      <span className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-        Manzeli
-      </span>
-    </Link>
-  );
-}
-
-function SearchBar() {
-  return (
-    <div className="hidden md:flex items-center">
-      <button className="flex items-center border border-[var(--border)] rounded-full px-2 py-2 shadow-sm hover:shadow-md transition-shadow duration-200">
-        <span className="px-4 text-sm font-semibold border-r border-[var(--border)]">
-          Anywhere
-        </span>
-        <span className="px-4 text-sm font-semibold border-r border-[var(--border)]">
-          Any week
-        </span>
-        <span className="px-4 text-sm text-[var(--muted)]">Add guests</span>
-        <div className="ml-2 w-8 h-8 rounded-full bg-[var(--accent)] flex items-center justify-center">
-          <Icon name="search" size={14} stroke="white" strokeWidth={3} />
-        </div>
-      </button>
-    </div>
-  );
-}
-
-function MobileSearchBar() {
-  return (
-    <div className="md:hidden pb-4">
-      <button className="w-full flex items-center gap-3 border border-[var(--border)] rounded-full px-4 py-3 shadow-sm bg-white">
-        <Icon name="search" size={18} strokeWidth={2.5} />
-        <div className="text-left">
-          <p className="text-sm font-semibold leading-tight">Where to?</p>
-          <p className="text-xs text-[var(--muted)] leading-tight mt-0.5">
-            Anywhere · Any week · Add guests
-          </p>
-        </div>
-      </button>
-    </div>
-  );
-}
-
-function UserMenu({ onClose }: { onClose: () => void }) {
-  const items = [
-    { label: "Sign up", href: "#", bold: true },
-    { label: "Log in", href: "#" },
-    { divider: true },
-    { label: "List your property", href: "#" },
-    { label: "Help", href: "#" },
-  ] as const;
-
-  return (
-    <div className="absolute right-0 top-[calc(100%+8px)] bg-white border border-[var(--border-light)] rounded-xl shadow-lg py-2 w-60 z-50">
-      {items.map((item, i) =>
-        "divider" in item ? (
-          <div
-            key={i}
-            className="border-t border-[var(--border-light)] my-1"
-          />
-        ) : (
-          <Link
-            key={i}
-            href={item.href}
-            onClick={onClose}
-            className={`block px-4 py-2.5 text-sm hover:bg-[var(--surface)] transition-colors ${
-              "bold" in item && item.bold ? "font-semibold" : ""
-            }`}
-          >
-            {item.label}
-          </Link>
-        )
-      )}
-    </div>
   );
 }

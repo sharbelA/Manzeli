@@ -1,19 +1,31 @@
+/**
+ * Listing — DB schema + joined images array.
+ */
 export interface Listing {
   id: string;
+  host_id: string;
   title: string;
   slug: string;
+  description: string;
   location: string;
-  region: string;
-  price_per_night: number;
-  currency: string;
-  cover_image: string;
-  images: string[];
+  price: number;
   bedrooms: number;
   bathrooms: number;
   max_guests: number;
-  rating: number;
-  review_count: number;
-  amenities: string[];
+  pet_friendly: boolean;
+  pool: boolean;
+  wifi: boolean;
+  parking: boolean;
+  ac: boolean;
+  bbq: boolean;
+  sea_view: boolean;
+  mountain_view: boolean;
+  latitude: number | null;
+  longitude: number | null;
+  house_rules: string[];
   is_featured: boolean;
-  host_name: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  images: string[];
 }

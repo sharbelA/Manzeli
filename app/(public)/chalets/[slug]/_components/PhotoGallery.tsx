@@ -43,7 +43,14 @@ export default function PhotoGallery({ images, title }: PhotoGalleryProps) {
     return () => { document.body.style.overflow = ""; };
   }, [modalOpen]);
 
-  if (!main) return null;
+  if (!main) {
+    return (
+      <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-[var(--surface)] to-[#ede4d8] h-64 md:h-96 flex flex-col items-center justify-center gap-3">
+        <Icon name="home" size={48} stroke="var(--muted)" strokeWidth={1.5} fill="none" />
+        <span className="text-sm text-[var(--muted)] font-medium">Photos coming soon</span>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -51,7 +58,7 @@ export default function PhotoGallery({ images, title }: PhotoGalleryProps) {
       <div className="relative">
         <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-2 rounded-2xl overflow-hidden max-h-[520px]">
           {/* Main image */}
-          <div className="relative aspect-[4/3] md:aspect-auto">
+          <div className="relative aspect-[16/9]">
             <Image
               src={main.url}
               alt={main.alt_text ?? title}
