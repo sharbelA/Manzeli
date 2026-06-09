@@ -61,11 +61,13 @@ export async function createHostAction(
       email,
       password,
       email_confirm: true,
+      user_metadata: { name, role: 'host' },
     });
 
   if (createError) return { error: createError.message };
 
-  const { error: profileError } = await admin.from("profiles").insert({
+  // Upsert in case the trigger already ran and created a 'guest' row
+  const { error: profileError } = await admin.from("profiles").upsert({
     id: created.user.id,
     name,
     phone,

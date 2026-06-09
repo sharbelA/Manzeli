@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import LoginForm from '@/app/_components/LoginForm'
+import SignupForm from '@/app/(auth)/_components/SignupForm'
 
-export const metadata: Metadata = { title: 'Sign in' }
+export const metadata: Metadata = { title: 'Create account' }
 
-export default async function LoginPage({
+export default async function SignupPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -22,20 +22,20 @@ export default async function LoginPage({
             Manzeli
           </Link>
           <p className="mt-1 text-sm text-warm-500">
-            Sign in to your account
+            Create your free account
           </p>
         </div>
 
         <div className="rounded-2xl border border-sand-200 bg-white px-8 py-8 shadow-sm">
-          <h1 className="mb-6 text-xl font-semibold text-warm-900">Welcome back</h1>
-          <LoginForm redirectTo={redirectTo} submitLabel="Sign in" />
+          <h1 className="mb-6 text-xl font-semibold text-warm-900">Get started</h1>
+          <SignupForm redirectTo={redirectTo} />
           <p className="mt-5 text-center text-sm text-warm-500">
-            Don&apos;t have an account?{' '}
+            Already have an account?{' '}
             <Link
-              href={raw ? `/signup?redirect=${encodeURIComponent(raw)}` : '/signup'}
+              href={raw ? `/login?redirect=${encodeURIComponent(raw)}` : '/login'}
               className="font-medium text-sea-600 hover:underline"
             >
-              Sign up
+              Sign in
             </Link>
           </p>
         </div>

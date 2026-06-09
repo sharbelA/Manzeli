@@ -10,6 +10,7 @@ const NAV = [
   { href: '/admin/listings', label: 'Chalets' },
   { href: '/admin/hosts',    label: 'Hosts' },
   { href: '/admin/users',    label: 'Users' },
+  { href: '/admin/reviews',  label: 'Reviews' },
 ]
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {

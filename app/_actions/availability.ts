@@ -56,6 +56,14 @@ export async function upsertAvailabilityAction(
 
   if (error) return { error: error.message };
 
+  // Also revalidate the public listing page so guests see updated availability
+  const { data: listing } = await supabase
+    .from("listings")
+    .select("slug")
+    .eq("id", listingId)
+    .single();
+  if (listing?.slug) revalidatePath(`/chalets/${listing.slug}`);
+
   revalidatePath(`/host/chalets/${listingId}/availability`);
   revalidatePath(`/admin/listings/${listingId}/availability`);
   revalidatePath("/chalets");

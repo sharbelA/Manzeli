@@ -1,4 +1,4 @@
-export type Role = 'admin' | 'host'
+export type Role = 'admin' | 'host' | 'guest'
 export type AvailabilityStatus = 'available' | 'booked' | 'blocked'
 
 export interface Database {
@@ -188,6 +188,31 @@ export interface Database {
           updated_at?: string
         }
       }
+      reviews: {
+        Row: {
+          id: string
+          listing_id: string
+          guest_id: string
+          guest_name: string
+          rating: number
+          comment: string
+          status: 'pending' | 'approved' | 'rejected'
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          listing_id: string
+          guest_id: string
+          guest_name: string
+          rating: number
+          comment?: string
+          status?: 'pending' | 'approved' | 'rejected'
+          created_at?: string
+        }
+        Update: {
+          status?: 'pending' | 'approved' | 'rejected'
+        }
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
@@ -197,6 +222,8 @@ export interface Database {
     }
   }
 }
+
+export type Review = Database['public']['Tables']['reviews']['Row']
 
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type Listing = Database['public']['Tables']['listings']['Row']

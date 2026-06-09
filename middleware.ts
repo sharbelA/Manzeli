@@ -66,13 +66,16 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Redirect authenticated users away from login pages
+  // Redirect authenticated users away from login/signup pages
   if (user) {
     if (pathname === '/host/login') {
       return NextResponse.redirect(new URL('/host/dashboard', request.url))
     }
     if (pathname === '/admin/login') {
       return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+    }
+    if (pathname === '/login' || pathname === '/signup') {
+      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 

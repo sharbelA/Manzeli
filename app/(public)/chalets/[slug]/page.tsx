@@ -8,6 +8,7 @@ import BookingCard from "./_components/BookingCard";
 import AvailabilityCalendar from "@/components/calendar/AvailabilityCalendar";
 import ExpandableTextClient from "./_components/ExpandableText";
 import MobileBookingBar from "./_components/MobileBookingBar";
+import ReviewSection from "./_components/ReviewSection";
 
 // ─── Metadata ────────────────────────────────────────────────
 
@@ -212,6 +213,10 @@ export default async function ChaletDetailPage(
                   mode="readonly"
                 />
               </section>
+
+              {/* ── Reviews ── */}
+              <Divider />
+              <ReviewSection listingId={listing.id} listingSlug={listing.slug} />
 
               {/* ── Google Maps ── */}
               {listing.latitude && listing.longitude && (

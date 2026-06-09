@@ -37,7 +37,16 @@ export default function UserMenu({ user }: { user: CurrentUser }) {
           { kind: "divider" },
           { kind: "logout", label: "Log out" },
         ]
-      : [
+      : user.role === "guest"
+      ? [
+          { kind: "header", label: `Hi, ${user.name}` },
+          { kind: "divider" },
+          { kind: "link", label: "Browse chalets", href: "/chalets" },
+          { kind: "link", label: "About", href: "/about" },
+          { kind: "divider" },
+          { kind: "logout", label: "Sign out" },
+        ]
+      : /* host */ [
           { kind: "header", label: `Hi, ${user.name}` },
           { kind: "link", label: "Host dashboard", href: "/host/dashboard", bold: true },
           { kind: "divider" },
@@ -46,11 +55,13 @@ export default function UserMenu({ user }: { user: CurrentUser }) {
           { kind: "divider" },
           { kind: "logout", label: "Log out" },
         ]
-    : [
-        { kind: "link", label: "Host login", href: "/host/login", bold: true },
+    : /* no user */ [
+        { kind: "link", label: "Sign in", href: "/login", bold: true },
+        { kind: "link", label: "Sign up", href: "/signup" },
+        { kind: "divider" },
+        { kind: "link", label: "Host login", href: "/host/login" },
         { kind: "link", label: "Admin", href: "/admin/login" },
         { kind: "divider" },
-        { kind: "link", label: "List your property", href: "/list-your-chalet" },
         { kind: "link", label: "Browse chalets", href: "/chalets" },
         { kind: "link", label: "About", href: "/about" },
       ];
