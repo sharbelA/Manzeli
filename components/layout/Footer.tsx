@@ -108,7 +108,7 @@ export default function Footer() {
                 href={`https://wa.me/${WA}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-warm-400 hover:text-[#25D366] transition-colors duration-200"
+                className="text-warm-400 hover:text-white transition-colors duration-200"
                 aria-label="WhatsApp"
               >
                 <Icon name="whatsapp" size={18} />
